@@ -65,7 +65,7 @@ userRouter.post('/signin', async (req: any, res: any) => {
       })
     }
     // console.log(user)
-    const validPass = await bcrypt.compare(password, user.password)
+    const validPass = await bcrypt.compare(password, user.password as string)
     console.log(validPass)
     if (!validPass) {
       return res.status(403).json({
@@ -75,7 +75,7 @@ userRouter.post('/signin', async (req: any, res: any) => {
     console.log('heljfaljfl')
     const id = user._id.toString()
     console.log(id)
-    const token = await jwt.sign({ id }, process.env.JWT_SECRET)
+    const token = await jwt.sign({ id }, process.env.JWT_SECRET as string)
     console.log(token, 'jfaj')
     return res.status(200).json({
       msg: 'Login sucessfully',
