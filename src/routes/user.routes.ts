@@ -58,6 +58,7 @@ userRouter.post('/signin', async (req: any, res: any) => {
 
   try {
     const user = await Users.findOne({ username })
+    console.log(user)
     if (!user) {
       return res.status(403).json({
         msg: 'Wrong email password',
@@ -67,16 +68,21 @@ userRouter.post('/signin', async (req: any, res: any) => {
     const validPass = await bcrypt.compare(password, user.password)
     console.log(validPass)
     if (!validPass) {
-      res.status(403).json({
-        msg:'Invalid email password'
+      return res.status(403).json({
+        msg: 'Invalid email password',
       })
-
-
     }
-    res.json({
-      msg: 'boss',
+    console.log('heljfaljfl')
+    const id = user._id.toString()
+    console.log(id)
+    const token = await jwt.sign({ id }, process.env.JWT_SECRET)
+    console.log(token, 'jfaj')
+    return res.status(200).json({
+      msg: 'Login sucessfully',
+      jwt_secret: token,
     })
   } catch (e) {
+    console.log('error', e)
     res.json({ error: e })
   }
 })
