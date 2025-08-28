@@ -1,4 +1,5 @@
 import mongoose, {Schema,model,Model} from "mongoose";
+import { boolean } from "zod";
 const user=new Schema({
     username:{type:String,required:true,unique:true},
     password:{type:String,required:true}
@@ -9,6 +10,7 @@ const content=new Schema({
     type:{type:String,enum:contentTypes,required:true},
     title:{type:String,required:true},
     tags:{type:[String]},
+    share:{type:boolean,default:false},
     userId:{type:Schema.Types.ObjectId,ref:'user'}
 })
 

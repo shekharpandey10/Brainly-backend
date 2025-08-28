@@ -127,5 +127,50 @@ contentRouter.delete('/delete', userAuth, async (req: any, res: any) => {
   }
 })
 
+contentRouter.put('/shareLink',userAuth,async(req:any,res:any)=>{
+  const {docId}=req.body
+  const userId=req.userId
+  try{
+
+    const x = await Contents.findOneAndUpdate(
+     {_id:docId,userId:userId},
+     {$set:{share:true}}
+    )
+    if(x.elngth = =0){
+      return error 
+    }
+    res.status(200).json({
+      msg:"Link is public now",
+      url:`/app/v1/content/brainly/${docId}`
+    })
+  }catch(e){
+    res.status(403).json({
+      msg:"Invalid Operation"
+    })
+  }
+})
+
+contentRouter.get('/brainly/:id',userAuth,async(req:any,res:any,next:any)=>{
+const urlId=req.params.id
+console.log(urlId)
+ if (!mongoose.Types.ObjectId.isValid(urlId)) {
+      return res.status(400).json({ error: "Invalid content ID" });
+    }
+
+try{
+ const data= await Contents.findById(urlId).select('title type tags')
+ console.log(data)
+  res.json({
+  msg:'thankyou',
+  data:data
+})
+}catch(e){
+  return res.json({
+    msg:"Link is private"
+  })
+}
+
+
+})
 
 export default contentRouter
