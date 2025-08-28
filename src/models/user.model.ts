@@ -1,27 +1,24 @@
 import mongoose, {Schema,model,Model} from "mongoose";
 const user=new Schema({
-    username:{type:String,require:true,unique:true},
-    password:{type:String,require:true}
+    username:{type:String,required:true,unique:true},
+    password:{type:String,required:true}
 })
 const contentTypes = ['image', 'video', 'article', 'audio']; // Extend as needed
 const content=new Schema({
     link:{type:String},
-    type:{type:String,enum:contentTypes,require:true},
-    title:{type:String,require:true},
-    tags:{type:[{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'Tags'
-    }]},
+    type:{type:String,enum:contentTypes,required:true},
+    title:{type:String,required:true},
+    tags:{type:[String]},
     userId:{type:Schema.Types.ObjectId,ref:'user'}
 })
 
 const tag =new Schema({
-    title:{type:String}
+    title:{type:String,unique:true}
 })
 
 const link=new Schema({
-    hash:{type:String,require:true},
-    userId:{type:Schema.Types.ObjectId,ref:'user',require:true}
+    hash:{type:String,required:true},
+    userId:{type:Schema.Types.ObjectId,ref:'user',required:true}
 })
 
 const Users=model('user',user)
@@ -29,4 +26,4 @@ const Contents=model('content',content)
 const Tags=model('tag',tag)
 const Links=model('link',link)
 
-export {Users,Contents}
+export {Users,Contents,Tags}

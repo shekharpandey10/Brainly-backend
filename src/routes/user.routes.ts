@@ -75,7 +75,7 @@ userRouter.post('/signin', async (req: any, res: any) => {
     console.log('heljfaljfl')
     const id = user._id.toString()
     console.log(id)
-    const token = await jwt.sign({ id }, process.env.JWT_SECRET as string)
+    const token = await jwt.sign({ id }, process.env.JWT_SECRET as string,{expiresIn:'4d'})
     console.log(token, 'jfaj')
     return res.status(200).json({
       msg: 'Login sucessfully',
