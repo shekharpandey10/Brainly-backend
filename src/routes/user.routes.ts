@@ -35,8 +35,10 @@ userRouter.post(
         username: username,
         password: Hashedpass,
       })
+      console.log(isCreated)
       if (isCreated) {
         return res.status(200).json({
+          userId:isCreated.id,
           msg: 'SignUp sucessfull.',
         })
       } else {
@@ -78,6 +80,7 @@ userRouter.post('/signin', async (req: any, res: any) => {
     const token = await jwt.sign({ id }, process.env.JWT_SECRET as string,{expiresIn:'4d'})
     console.log(token, 'jfaj')
     return res.status(200).json({
+      uerId:user._id,
       msg: 'Login sucessfully',
       jwt_secret: token,
     })

@@ -20,21 +20,20 @@ contentRouter.post(
   async (req: any, res: any) => {
     const { type, title, link, tags } = req.body
 
-    await Tags.findOne(tags)
-
-    const userId = new mongoose.Types.ObjectId(req.UserId)
-    console.log(type, 'type')
-    console.log(title, 'title')
-    console.log(link, 'link')
-    console.log(tags, 'tags')
-    console.log(userId, 'userId')
+    console.log(typeof req.userId, '  the boss alyaws')
+    console.log(req.userId, '  the boss alyaws')
+    let userId
+    if (mongoose.Types.ObjectId.isValid(req.userId)) {
+      userId = new mongoose.Types.ObjectId(req.userId)
+    } else {
+      throw new Error('Invalid userId')
+    }
     try {
       console.log('helllofa')
       const result = await Contents.create({
         link,
         type,
         title,
-        //@ts-ignore
         tags,
         userId,
       })
@@ -42,7 +41,7 @@ contentRouter.post(
       return res.status(201).json({
         success: true,
         message: 'Content Added',
-        contentId: userId,
+        autherId: userId,
       })
     } catch (e) {
       console.log(e)
@@ -56,7 +55,7 @@ contentRouter.post(
   async (req: any, res: any, next: any) => {
     console.log('hello')
     const { tag } = req.body
-    console.log('jflajlkajfklaj',tag)
+    console.log('jflajlkajfklaj', tag)
     try {
       const result = await Tags.findOne({ tag })
       console.log(result)

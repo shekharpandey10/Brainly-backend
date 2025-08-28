@@ -38,10 +38,9 @@ export const zodSignUp = (
   }
 }
 
-const contentTypes = ['video', 'article', 'podcast']
 
 const linkSchema = z.string().url("Must be a valid URL").min(11);
-const typeSchema = z.union(contentTypes.map((t) => z.literal(t)))
+const typeSchema = z.string().min(2)
 const titleSchema = z.string().min(1)
 const tagsSchema = z.array(z.string().optional())
 
