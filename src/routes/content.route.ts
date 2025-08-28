@@ -82,4 +82,25 @@ contentRouter.post(
   }
 )
 
+contentRouter.get('/list',userAuth,async(req:any,res:any)=>{
+  const userId=req.userId
+  
+  try{
+   const data= await Contents.find({userId:userId}).select('-userId')
+   console.log(data)
+   if(data.length<1){
+    return res.status(403).json({
+      msg:"no docs found",
+      userId:userId
+    })
+   }
+   res.status(200).json({
+    data:data
+   })
+  }catch(e){
+  res.status(400).json({
+    error:e
+  })
+  }
+})
 export default contentRouter
