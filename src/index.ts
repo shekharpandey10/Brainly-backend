@@ -2,8 +2,10 @@ import mongoose from "mongoose"
 import dotenv from 'dotenv'
 dotenv.config()
 import app from './app'
+import cors from 'cors'
 
 
+app.use(cors())
 
 
 const main = async () => {
