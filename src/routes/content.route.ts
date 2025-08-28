@@ -4,6 +4,7 @@ import { Contents, Tags } from '../models/user.model'
 import { userAuth } from '../validators/userAuth'
 import mongoose from 'mongoose'
 import { success } from 'zod'
+import { error } from 'console'
 
 const contentRouter = Router()
 
@@ -82,25 +83,49 @@ contentRouter.post(
   }
 )
 
-contentRouter.get('/list',userAuth,async(req:any,res:any)=>{
-  const userId=req.userId
-  
-  try{
-   const data= await Contents.find({userId:userId}).select('-userId')
-   console.log(data)
-   if(data.length<1){
-    return res.status(403).json({
-      msg:"no docs found",
-      userId:userId
+contentRouter.get('/list', userAuth, async (req: any, res: any) => {
+  const userId = req.userId
+
+  try {
+    const data = await Contents.find({ userId: userId }).select('-userId')
+    console.log(data)
+    if (data.length < 1) {
+      return res.status(403).json({
+        msg: 'no docs found',
+        userId: userId,
+      })
+    }
+    res.status(200).json({
+      data: data,
     })
-   }
-   res.status(200).json({
-    data:data
-   })
-  }catch(e){
-  res.status(400).json({
-    error:e
-  })
+  } catch (e) {
+    res.status(400).json({
+      error: e,
+    })
   }
 })
+
+contentRouter.delete('/delete', userAuth, async (req: any, res: any) => {
+  const { docId } = req.body
+
+  try {
+    const result = await Contents.deleteOne({ _id: docId })
+    if (!result.acknowledged || !result.deletedCount) {
+     return res.status(403).json({
+        msg: 'Trying to delete a doc you don’t own or Document is not present',
+      })
+    }
+    res.json({
+      msg: 'deleted sucessfully',
+      deletedDocs: result.deletedCount,
+    })
+  } catch (e) {
+    res.status(403).json({
+      msg: "Couldn't delete the docs..... something invalid ",
+      error: e,
+    })
+  }
+})
+
+
 export default contentRouter
