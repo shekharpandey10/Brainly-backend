@@ -136,8 +136,10 @@ contentRouter.put('/shareLink',userAuth,async(req:any,res:any)=>{
      {_id:docId,userId:userId},
      {$set:{share:true}}
     )
-    if(x.elngth = =0){
-      return error 
+    if(!x){
+      return res.status(404).json({
+        msg:'data not found!'
+      })
     }
     res.status(200).json({
       msg:"Link is public now",
@@ -158,7 +160,7 @@ console.log(urlId)
     }
 
 try{
- const data= await Contents.findById(urlId).select('title type tags')
+ const data= await Contents.findById(urlId).select('title type tags ')
  console.log(data)
   res.json({
   msg:'thankyou',
