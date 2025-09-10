@@ -27,7 +27,7 @@ userRouter.post(
       console.log(u)
       if (u) {
         return res.status(403).json({
-          msg: 'User already exists with this username...Please login!',
+          msg: 'User already exists...Please login!',
         })
       }
       const Hashedpass = await bcrypt.hash(password, 5)
@@ -42,13 +42,13 @@ userRouter.post(
           msg: 'SignUp sucessfull.',
         })
       } else {
-        return res.status(500).json({
+        return res.status(401).json({
           msg: 'SignUp failed... Please try again',
         })
       }
     } catch (error) {
       console.log(error)
-      return res.status(403).json({
+      return res.status(500).json({
         error: error,
       })
     }

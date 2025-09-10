@@ -34,7 +34,9 @@ export const zodSignUp = (
     console.log(req.validateData)
     next()
   } catch (e: any) {
-    return res.status(411).json({ error: e.errors ?? e })
+    return res.status(411).json({ error: e.errors ?? e ,
+      msg:"Invalid Input Format"
+    })
   }
 }
 

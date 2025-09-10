@@ -9,13 +9,18 @@ export const userAuth = async (req: any, res: any, next: NextFunction) => {
   // Extract token
   const token = authHeader.split(' ')[1]
   try {
-    const decoded = await jwt.verify(token, process.env.JWT_SECRET as string)
-    console.log(decoded," decoded")
-    req.userId = decoded.id
-    console.log(req.userId," after decoded")
-    next()
+    jwt.verify(
+      token,
+      process.env.JWT_SECRET as string,
+      (err: any, user: any) => {
+        if (err) return res.status(403).json({ msg: 'Invalid token' })
+        console.log(user, ' token')
+        req.userId = user.id
+        next()
+      }
+    )
   } catch (e) {
     console.log(e)
-    return res.status(401).json({ error: 'Invalid token' })
+    return res.status(401).json({ error: 'Invalid token', status: 401 })
   }
 }
