@@ -1,12 +1,13 @@
-import mongoose from "mongoose"
 import dotenv from 'dotenv'
 dotenv.config()
+import express from 'express'
+import mongoose from "mongoose"
 import app from './app'
 import cors from 'cors'
 
 
 app.use(cors())
-
+app.use(express.json())
 
 const main = async () => {
   try {
