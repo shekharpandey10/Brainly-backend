@@ -3,11 +3,11 @@ import  userRouter  from "./routes/user.routes"
 import contentRouter from "./routes/content.route"
 import cors from 'cors'
 
-
+const domains=["brainly-front-end-rtjd.vercel.app","http://localhost:5173"]
 const app=express()
 app.use(cors({
-  origin: "http://localhost:5173", 
-  methods: ["GET", "POST", "PUT", "DELETE"],
+  origin: domains,
+  methods: ["GET", "POST", "PUT", "DELETE","PATCH"],
   credentials: true
 }));
 

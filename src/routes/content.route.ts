@@ -89,8 +89,8 @@ contentRouter.get('/list', userAuth, async (req: any, res: any) => {
   try {
     const data = await Contents.find({ userId: userId }).select('-userId')
     console.log(data)
-    if (data.length < 1) {
-      return res.status(403).json({
+    if (data.length < 0) {
+      return res.status(200).json({
         msg: 'no docs found',
         userId: userId,
       })
@@ -128,7 +128,9 @@ contentRouter.delete('/delete', userAuth, async (req: any, res: any) => {
 })
 
 contentRouter.put('/shareLink', userAuth, async (req: any, res: any) => {
+ 
   const { docId } = req.body
+  
   const userId = req.userId
   try {
     const x = await Contents.findOneAndUpdate(
